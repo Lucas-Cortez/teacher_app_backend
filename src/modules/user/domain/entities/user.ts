@@ -1,39 +1,35 @@
 import { v4 as uuid } from "uuid";
 
 export interface IUser {
-  id: string;
+  userId: string;
   name: string;
-  email: string;
-  password: string;
-  salt: string;
-  createdAt: Date;
-  updatedAt: Date;
+  email?: string;
+  role: string;
+  verified: boolean;
+
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export class User implements IUser {
-  public readonly id: string;
+  public readonly userId: string;
   public readonly name: string;
-  public readonly email: string;
-  public readonly password: string;
-  public readonly salt: string;
-  public readonly createdAt: Date;
-  public readonly updatedAt: Date;
+  public readonly email?: string;
+  public readonly role: string;
+  public readonly verified: boolean;
+
+  public readonly createdAt?: Date;
+  public readonly updatedAt?: Date;
 
   private constructor(user: IUser) {
-    this.id = user.id;
-    this.name = user.name;
-    this.email = user.email;
-    this.password = user.password;
-    this.salt = user.salt;
-    this.createdAt = user.createdAt;
-    this.updatedAt = user.updatedAt;
+    Object.assign(this, user);
   }
 
   public static restore(user: IUser) {
     return new User(user);
   }
 
-  public static create(user: Omit<IUser, "id" | "createdAt" | "updatedAt">) {
-    return new User({ ...user, id: uuid(), createdAt: new Date(), updatedAt: new Date() });
+  public static create(user: Omit<IUser, "userId">) {
+    return new User({ ...user, userId: uuid() });
   }
 }

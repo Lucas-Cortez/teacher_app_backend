@@ -1,0 +1,1 @@
+ALTER TABLE "token_code" ADD CONSTRAINT "token_code_user_id_unique" UNIQUE("user_id");

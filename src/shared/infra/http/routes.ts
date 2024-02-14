@@ -1,20 +1,18 @@
-import { FastifyInstance, RegisterOptions, RouteShorthandOptions } from "fastify";
+import { FastifyInstance } from "fastify";
+import { authRoutes } from "src/modules/auth/app/auth.routes";
 
 export const routes = async (instance: FastifyInstance) => {
-  instance.get("/hello", async (request, reply) => {
-    return { hello: "it worked!" };
-  });
+  instance.register(authRoutes, { prefix: "/auth" });
+  // instance.get(
+  //   "/hello",
+  //   {
+  //     onRequest: [instance.authenticate],
+  //     // preHandler: [instance.authenticate],
+  //   },
+  //   async (request, reply) => {
+  //     console.log(request.user);
 
-  instance.get(
-    "/opa",
-    {
-      // onRequest: []
-      preHandler: [instance.authenticate],
-    },
-    async (request, reply) => {
-      console.log(request.user);
-
-      return { hello: "it worked!" };
-    },
-  );
+  //     return { hello: "world" };
+  //   },
+  // );
 };

@@ -1,16 +1,16 @@
 import Fastify, { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import FastifySwagger from "@fastify/swagger";
 import FastifySwaggerUi from "@fastify/swagger-ui";
-import FastifyJwt, { JWT } from "@fastify/jwt";
+import FastifyJwt from "@fastify/jwt";
 
 import { routes } from "./routes";
-import { env } from "src/shared/utils/env";
+import { Stage, env } from "src/shared/utils/env";
 
 export class Server {
   private readonly app: FastifyInstance;
 
   constructor() {
-    this.app = Fastify({ logger: env.NODE_ENV === "development" });
+    this.app = Fastify({ logger: env.NODE_ENV === Stage.DEVELOPMENT });
     this.configure();
   }
 
@@ -21,9 +21,7 @@ export class Server {
   }
 
   private configureJwt() {
-    this.app.register(FastifyJwt, {
-      secret: env.JWT_SECRET,
-    });
+    this.app.register(FastifyJwt, { secret: env.JWT_SECRET });
 
     this.app.decorate("authenticate", async (request: FastifyRequest, reply: FastifyReply) => {
       try {
