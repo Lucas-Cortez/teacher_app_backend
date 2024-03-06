@@ -1,5 +1,5 @@
 import { PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import { IUserRepository } from "../../domain/repositories/user-repository";
+import { IUserRepository } from "../../domain/repositories/user.repository";
 import { User } from "../../domain/entities/user";
 
 export class DrizzleUserRepository implements IUserRepository {

@@ -4,7 +4,7 @@ import { SendLoginTokenUseCase } from "src/modules/auth/app/use-cases/send-login
 import { container as appContainer } from "tsyringe";
 import { JwtService } from "src/modules/auth/app/services/jwt.service";
 import { MailService } from "../services/mail.service";
-import { UserRepository } from "src/modules/user/domain/repositories/user-repository";
+import { UserRepository } from "src/modules/user/domain/repositories/user.repository";
 import { TokenCodeRepository } from "src/modules/auth/domain/repositories/token-code.repository";
 import { DrizzleTokenCodeRepository } from "src/modules/auth/infra/repositories/drizzle-token-code.repository";
 import { DrizzleUserRepository } from "src/modules/user/infra/repositories/drizzle-user-repository";
@@ -18,6 +18,6 @@ appContainer.registerSingleton(JwtService, WebJwtService);
 
 appContainer.registerSingleton(SendLoginTokenUseCase, SendLoginTokenUseCase);
 // appContainer.registerSingleton(LoginWithTokenUseCase, LoginWithTokenUseCase);
-appContainer.registerSingleton(AuthController, AuthController);
+// appContainer.registerSingleton(AuthController, AuthController);
 
 export { appContainer };

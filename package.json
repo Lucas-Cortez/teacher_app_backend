@@ -2,7 +2,7 @@
   "name": "professors_app_backend",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
+  "type": "commonjs",
   "main": "dist/server.js",
   "scripts": {
     "dev": "tsup -- dev",
@@ -13,7 +13,9 @@
     "db:generate": "pnpm drizzle-kit generate:pg",
     "db:migrate": "pnpm tsx drizzle/migrate.ts",
     "db:push": "drizzle-kit push:pg",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "module:new": "bash create-module.sh",
+    "email": "email dev --port 5000"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +24,7 @@
     "@fastify/jwt": "^8.0.0",
     "@fastify/swagger": "^8.14.0",
     "@fastify/swagger-ui": "^2.1.0",
+    "@react-email/components": "0.0.15",
     "@types/node": "^20.11.6",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.1",
@@ -29,19 +32,21 @@
     "fastify": "^4.25.2",
     "jsonwebtoken": "^9.0.2",
     "postgres": "^3.4.3",
+    "react": "^18.2.0",
+    "react-email": "2.1.0",
     "reflect-metadata": "^0.2.1",
     "tsyringe": "^4.8.0",
-    "uuid": "^9.0.1",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "zod-to-json-schema": "^3.22.4"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.5",
-    "@types/uuid": "^9.0.8",
     "drizzle-kit": "^0.20.14",
     "prettier": "^3.2.4",
     "tsup": "^8.0.1",
     "tsx": "^4.7.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vitest": "^1.3.1"
   }
 }

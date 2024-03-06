@@ -6,7 +6,7 @@ import FastifyJwt from "@fastify/jwt";
 import { routes } from "./routes";
 import { Stage, env } from "src/shared/utils/env";
 
-export class Server {
+export class App {
   private readonly app: FastifyInstance;
 
   constructor() {
@@ -49,6 +49,8 @@ export class Server {
     } catch (err) {
       this.app.log.error(err);
       process.exit(1);
+    } finally {
+      console.log(`Server running at http://localhost:${port}`);
     }
   }
 }

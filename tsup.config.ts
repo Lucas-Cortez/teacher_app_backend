@@ -7,7 +7,7 @@ export default defineConfig((options) => {
     ignoreWatch: ["node_modules"],
     clean: true,
     outDir: "dist",
-    format: ["esm"],
+    format: ["esm", "cjs"],
     entry: ["src/server.ts"],
     watch: isDev,
     sourcemap: isDev,

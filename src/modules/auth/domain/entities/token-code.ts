@@ -1,4 +1,4 @@
-import { v4 as uuid } from "uuid";
+import { randomUUID } from "crypto";
 
 export interface ITokenCode {
   tokenCodeId: string;
@@ -12,11 +12,13 @@ export class TokenCode implements ITokenCode {
   public readonly tokenCodeId: string;
   public readonly token: string;
   public readonly expiredAt: Date;
-
   public readonly userId: string;
 
   private constructor(tokenCode: ITokenCode) {
-    Object.assign(this, tokenCode);
+    this.tokenCodeId = tokenCode.tokenCodeId;
+    this.token = tokenCode.token;
+    this.expiredAt = tokenCode.expiredAt;
+    this.userId = tokenCode.userId;
   }
 
   public static restore(tokenCode: ITokenCode) {
@@ -24,6 +26,6 @@ export class TokenCode implements ITokenCode {
   }
 
   public static create(tokenCode: Omit<ITokenCode, "tokenCodeId">) {
-    return new TokenCode({ ...tokenCode, tokenCodeId: uuid() });
+    return new TokenCode({ ...tokenCode, tokenCodeId: randomUUID() });
   }
 }

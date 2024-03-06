@@ -1,12 +1,13 @@
 export interface PaginationOptions {
-  skip?: number;
-  take?: number;
-  startTime?: Date;
-  endTime?: Date;
+  page?: number;
+  size?: number;
 }
 
-export interface PaginatedOutput {
-  take: number;
-  skip: number;
-  total: number;
+export interface PaginatedOutput<T> {
+  data: T[];
+  meta: {
+    page: number;
+    size: number;
+    total: number;
+  };
 }

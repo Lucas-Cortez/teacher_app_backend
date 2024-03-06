@@ -1,8 +1,8 @@
 import "reflect-metadata";
 
-import { Server } from "./shared/infra/http/app";
+import { App } from "./shared/infra/http/app";
 import { env } from "./shared/utils/env";
 
-const server = new Server();
+const app = new App();
 
-server.listen(env.PORT);
+app.listen(env.PORT);
