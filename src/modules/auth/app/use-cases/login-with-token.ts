@@ -34,7 +34,7 @@ export class LoginWithTokenUseCase implements IUseCase<LoginWithTokenInput, Logi
 
     await this.tokenCodeRepository.deleteById(tokenCode.tokenCodeId);
 
-    if (tokenCode.expiredAt.getTime() < Date.now()) throw new Error("[ERROR]: token expired");
+    if (tokenCode.isExpired()) throw new Error("[ERROR]: token expired");
 
     const tokenUser = { userId: user.userId, role: user.role, email: user.email, verified: user.verified };
 

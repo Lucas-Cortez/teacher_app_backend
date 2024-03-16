@@ -5,7 +5,7 @@ import { IStudentRepository, StudentRepository } from "../../domain/repositories
 import { StudentQueryOptions } from "../../domain/entities/student-query-options";
 import { PaginatedOutput } from "src/core/abstracts/pagination";
 import { Student } from "../../domain/entities/student";
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "src/core/constants/pagination-params";
+import { buildPaginatedMetadata } from "src/shared/utils/helpers/build-paginated-metadata";
 
 export type GetStudentsByTeacherInput = { teacherId: string; query?: Omit<StudentQueryOptions, "teacherId"> };
 export type GetStudentsByTeacherOutput = PaginatedOutput<Student>;
@@ -20,15 +20,14 @@ export class GetStudentsByTeacherUseCase
   ) {}
 
   async execute(input: GetStudentsByTeacherInput): Promise<GetStudentsByTeacherOutput> {
-    const data = await this.studentRepository.findAll({ ...input.query, teacherId: input.teacherId });
+    const { count, data } = await this.studentRepository.findAll({
+      ...input.query,
+      teacherId: input.teacherId,
+    });
 
     return {
       data,
-      meta: {
-        page: input.query?.page || DEFAULT_PAGE,
-        size: input.query?.size || DEFAULT_PAGE_SIZE,
-        total: data.length,
-      },
+      meta: buildPaginatedMetadata(input.query, count),
     };
   }
 }

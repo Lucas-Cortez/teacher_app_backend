@@ -37,4 +37,8 @@ export class User implements IUser {
   public static create(user: Omit<IUser, "userId" | "verified">) {
     return new User({ ...user, verified: false, userId: randomUUID() });
   }
+
+  public isStudent() {
+    return this.role === UserRole.STUDENT;
+  }
 }

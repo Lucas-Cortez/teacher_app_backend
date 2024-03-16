@@ -4,13 +4,11 @@ import { TeacherStudent } from "../entities/teacher-student";
 
 export const StudentRepository = Symbol.for("StudentRepository");
 
-export interface IStudentRepository {
-  findByIdAndTeacherId(studentId: string, teacherId: string): Promise<Student | null>;
-  findAll(queryOptions?: StudentQueryOptions): Promise<Student[]>;
-  findById(studentId: string): Promise<Student | null>;
-  // findByEmail(email: string): Promise<Student | null>;
-  // findByUserEmail(email: string): Promise<Student | null>;
-  findByUserId(userId: string): Promise<Student | null>;
-  create(student: Student): Promise<Student>;
-  vinculateTeacher(teacherStudent: TeacherStudent): Promise<void>;
+export interface IStudentRepository<Context = any> {
+  findByIdAndTeacherId(studentId: string, teacherId: string, ctx?: Context): Promise<Student | null>;
+  findAll(queryOptions?: StudentQueryOptions, ctx?: Context): Promise<{ count: number; data: Student[] }>;
+  findById(studentId: string, ctx?: Context): Promise<Student | null>;
+  findByUserId(userId: string, ctx?: Context): Promise<Student | null>;
+  create(student: Student, ctx?: Context): Promise<Student>;
+  vinculateTeacher(teacherStudent: TeacherStudent, ctx?: Context): Promise<void>;
 }

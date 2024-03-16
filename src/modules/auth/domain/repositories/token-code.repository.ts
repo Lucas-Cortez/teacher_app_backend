@@ -2,9 +2,9 @@ import { TokenCode } from "../entities/token-code";
 
 export const TokenCodeRepository = Symbol.for("TokenCodeRepository");
 
-export interface ITokenCodeRepository {
-  create(data: TokenCode): Promise<TokenCode>;
-  findByUserId(userId: string): Promise<null | TokenCode>;
-  findByToken(token: string): Promise<null | TokenCode>;
-  deleteById(tokenCodeId: string): Promise<void>;
+export interface ITokenCodeRepository<Context = any> {
+  create(data: TokenCode, ctx?: Context): Promise<TokenCode>;
+  findByUserId(userId: string, ctx?: Context): Promise<null | TokenCode>;
+  findByToken(token: string, ctx?: Context): Promise<null | TokenCode>;
+  deleteById(tokenCodeId: string, ctx?: Context): Promise<void>;
 }

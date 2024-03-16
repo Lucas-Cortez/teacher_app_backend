@@ -8,6 +8,7 @@ import { UserRole } from "src/modules/user/domain/enum/user-role";
 import { TeacherStudent } from "../../domain/entities/teacher-student";
 import { IMailService, MailService } from "src/shared/services/mail.service";
 import { env } from "src/shared/utils/env";
+import { IUnitOfWork, UnitOfWork } from "src/shared/unit-of-work/unit-of-work";
 
 export type InviteStudentInput = { teacherId: string; email: string };
 export type InviteStudentOutput = void;
@@ -15,6 +16,8 @@ export type InviteStudentOutput = void;
 @injectable()
 export class InviteStudentUseCase implements IUseCase<InviteStudentInput, InviteStudentOutput> {
   constructor(
+    @inject(UnitOfWork)
+    private readonly unitOfWork: IUnitOfWork,
     @inject(StudentRepository)
     private readonly studentRepository: IStudentRepository,
     @inject(UserRepository)
@@ -24,35 +27,37 @@ export class InviteStudentUseCase implements IUseCase<InviteStudentInput, Invite
   ) {}
 
   async execute(input: InviteStudentInput): Promise<InviteStudentOutput> {
-    let user = await this.userRepository.findByEmail(input.email);
+    await this.unitOfWork.run(async (ctx) => {
+      let user = await this.userRepository.findByEmail(input.email);
 
-    if (user?.role !== UserRole.STUDENT) throw new Error("User is not a student");
+      if (user?.isStudent()) throw new Error("User is not a student");
 
-    if (!user) {
-      const newUser = User.create({ email: input.email, role: UserRole.STUDENT });
-      user = await this.userRepository.create(newUser);
-    }
+      if (!user) {
+        const newUser = User.create({ email: input.email, role: UserRole.STUDENT });
+        user = await this.userRepository.create(newUser, ctx);
+      }
 
-    const student = await this.studentRepository.findByUserId(user.userId);
+      const student = await this.studentRepository.findByUserId(user.userId, ctx);
 
-    if (!student) throw new Error("Student not found");
+      if (!student) throw new Error("Student not found");
 
-    const teacherStudent = TeacherStudent.create({
-      teacherId: input.teacherId,
-      studentId: student.studentId,
-      active: true,
-    });
-
-    await this.studentRepository.vinculateTeacher(teacherStudent);
-
-    if (!user.verified) {
-      await this.mailService.send({
-        to: [user.email],
-        from: env.MAIL_FROM,
-        body: "Clique no link para se cadastrar: [LINK DE CADASTRO]",
-        subject: "Convite do professor",
+      const teacherStudent = TeacherStudent.create({
+        teacherId: input.teacherId,
+        studentId: student.studentId,
+        active: true,
       });
-    }
+
+      await this.studentRepository.vinculateTeacher(teacherStudent, ctx);
+
+      if (!user.verified) {
+        await this.mailService.send({
+          to: [user.email],
+          from: env.MAIL_FROM,
+          body: "Clique no link para se cadastrar: [LINK DE CADASTRO]",
+          subject: "Convite do professor",
+        });
+      }
+    });
   }
 }
 

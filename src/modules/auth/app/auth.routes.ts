@@ -7,13 +7,21 @@ import { FastifyInstance } from "fastify";
 export const authRoutes = async (instance: FastifyInstance) => {
   // const authController = appContainer.resolve(AuthController);
 
+  instance.addHook("onRequest", (request, reply, done) => {
+    console.log("ON_REQUEST", request.cookies);
+
+    reply.setCookie("hello", "world");
+
+    done();
+  });
+
   instance.post(
     "/send-login-token/:id",
-    // {
-    //   schema: {
-    //     body: testeSchema.definitions?.teste,
-    //   },
-    // },
+    {
+      // schema: {
+      //   body: testeSchema.definitions?.teste,
+      // },
+    },
     async (request, reply) => {
       return { hello: "world" };
     },

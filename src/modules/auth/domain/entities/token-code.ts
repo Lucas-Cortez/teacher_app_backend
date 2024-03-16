@@ -28,4 +28,8 @@ export class TokenCode implements ITokenCode {
   public static create(tokenCode: Omit<ITokenCode, "tokenCodeId">) {
     return new TokenCode({ ...tokenCode, tokenCodeId: randomUUID() });
   }
+
+  public isExpired() {
+    return this.expiredAt.getTime() < Date.now();
+  }
 }

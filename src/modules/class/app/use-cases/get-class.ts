@@ -3,7 +3,7 @@ import { IUseCase } from "src/core/abstracts/use-case";
 import { ClassRepository, IClassRepository } from "../../domain/repositories/class.repository";
 import { Class } from "../../domain/entities/class";
 
-export type GetClassInput = { classId: string };
+export type GetClassInput = { classId: string; teacherId: string };
 export type GetClassOutput = Class;
 
 @injectable()
@@ -14,7 +14,7 @@ export class GetClassUseCase implements IUseCase<GetClassInput, GetClassOutput> 
   ) {}
 
   async execute(input: GetClassInput): Promise<GetClassOutput> {
-    const classEntity = await this.classRepository.findById(input.classId);
+    const classEntity = await this.classRepository.findByIdAndTeacherId(input.classId, input.teacherId);
 
     if (!classEntity) {
       throw new Error("Class not found");
