@@ -1,4 +1,6 @@
 import { FastifyInstance } from "fastify";
+import lodash from "lodash";
+
 import { authRoutes } from "src/modules/auth/app/auth.routes";
 import { JwtGuard } from "src/modules/auth/app/guards/jwt.guard";
 import { JwtMiddleware } from "src/modules/auth/app/middlewares/jwt-middleware";
@@ -7,17 +9,38 @@ import { WebJwtService } from "src/modules/auth/infra/services/web-jwt.service";
 export const routes = async (instance: FastifyInstance) => {
   instance.register(authRoutes, { prefix: "/auth" });
 
-  const jwt = new JwtMiddleware(new JwtGuard(new WebJwtService()));
+  const jwtService = new WebJwtService();
+
+  const jwt = new JwtMiddleware(new JwtGuard(jwtService));
+
+  const opa = jwtService.sign({ name: "Lucas" }, { expiresIn: "1w" });
+
+  // console.log(opa);
+
+  instance.addHook("onRoute", (routeOptions) => {
+    if (routeOptions.prefix) {
+      const tag = routeOptions.prefix.replace("/", "");
+
+      routeOptions.schema = {
+        ...routeOptions.schema,
+        tags: [lodash.capitalize(tag), ...(routeOptions.schema?.tags || [])],
+      };
+    }
+  });
 
   instance.get(
     "/hello",
     {
       onRequest: jwt.use.bind(jwt),
-      // preHandler: [instance.authenticate],
+      schema: {
+        security: [{ CookieAuth: [] }],
+      },
     },
 
     async (request, reply) => {
-      // console.log(request.user);
+      console.log(request.user);
+
+      reply.setCookie("accessToken", opa, { domain: "localhost", path: "/", maxAge: 60 });
 
       return { hello: "world" };
     },

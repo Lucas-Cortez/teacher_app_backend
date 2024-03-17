@@ -32,6 +32,7 @@
     "drizzle-orm": "^0.29.3",
     "fastify": "^4.25.2",
     "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
     "postgres": "^3.4.3",
     "react": "^18.2.0",
     "react-email": "2.1.0",
@@ -43,6 +44,7 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.5",
+    "@types/lodash": "^4.17.0",
     "drizzle-kit": "^0.20.14",
     "prettier": "^3.2.4",
     "tsup": "^8.0.1",

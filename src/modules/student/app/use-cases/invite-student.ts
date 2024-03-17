@@ -60,10 +60,3 @@ export class InviteStudentUseCase implements IUseCase<InviteStudentInput, Invite
     });
   }
 }
-
-// verificar se usuario existe
-// verificar se usuario é estudante
-// caso não seja, cancelar operação
-// se não existir, criar estudante
-// vincular estudante ao professor
-// enviar email para estudante com link para cadastro

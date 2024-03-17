@@ -8,7 +8,7 @@ import { TokenType } from "../../domain/enums/token-type";
 export type LoginWithTokenInput = { email: string; token: string };
 export type LoginWithTokenOutput = {
   accessToken: string;
-  refreshToken: string;
+  // refreshToken: string;
   user: { userId: string; email: string; role: string; verified: boolean };
 };
 
@@ -40,14 +40,14 @@ export class LoginWithTokenUseCase implements IUseCase<LoginWithTokenInput, Logi
 
     const accessToken = this.jwtService.sign(
       { ...tokenUser, type: TokenType.ACCESS_TOKEN },
-      { expiresIn: "1h" },
+      { expiresIn: "1w" },
     );
 
-    const refreshToken = this.jwtService.sign(
-      { userId: user.userId, type: TokenType.REFRESH_TOKEN },
-      { expiresIn: "30d" },
-    );
+    // const refreshToken = this.jwtService.sign(
+    //   { userId: user.userId, type: TokenType.REFRESH_TOKEN },
+    //   { expiresIn: "30d" },
+    // );
 
-    return { accessToken, refreshToken, user: tokenUser };
+    return { accessToken, user: tokenUser };
   }
 }

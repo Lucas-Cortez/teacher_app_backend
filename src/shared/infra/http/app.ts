@@ -7,7 +7,7 @@ import FastifyCookie from "@fastify/cookie";
 import { routes } from "./routes";
 import { Stage, env } from "src/shared/utils/env";
 import { AppError } from "src/shared/errors/app-error";
-import { internalErrorFactory } from "src/shared/errors/factories/internal-error";
+import { ErrorFactory } from "src/shared/errors/factories/error-factory";
 
 export class App {
   private readonly app: FastifyInstance;
@@ -39,10 +39,25 @@ export class App {
   }
 
   private configureSwagger() {
-    this.app.register(FastifySwagger);
-    this.app.register(FastifySwaggerUi, {
-      routePrefix: "/api",
+    this.app.register(FastifySwagger, {
+      openapi: {
+        info: {
+          title: "Teacher's backend API",
+          // description: "Testing the dahdapwjadw",
+          version: "0.1.0",
+        },
+        components: {
+          securitySchemes: {
+            CookieAuth: {
+              type: "apiKey",
+              in: "cookie",
+              name: "accessToken",
+            },
+          },
+        },
+      },
     });
+    this.app.register(FastifySwaggerUi, { routePrefix: "/docs", theme: { title: "Teacher's backend API" } });
   }
 
   private configureRoutes() {
@@ -60,7 +75,7 @@ export class App {
       if (error instanceof AppError)
         reply.status(error.status).send(AppError.formatError(error.error, error.status, error.message));
 
-      reply.status(500).send(internalErrorFactory());
+      reply.status(500).send(ErrorFactory.internalServerError("Internal Server Error").appError);
     });
   }
 

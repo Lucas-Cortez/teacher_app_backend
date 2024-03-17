@@ -17,4 +17,8 @@ export class AppError extends Error {
   public static formatError(error: string, status: number, message: string) {
     return { status, error, message };
   }
+
+  get appError() {
+    return AppError.formatError(this.error, this.status, this.message);
+  }
 }
