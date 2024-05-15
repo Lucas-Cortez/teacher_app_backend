@@ -7,7 +7,7 @@ fi
 
 root_folder="$1"
 
-mkdir -p "src/modules/$root_folder"/{app/{use-cases,dtos},domain/{entities,repositories},infra/repositories}
+mkdir -p "src/modules/$root_folder"/{app/{use-cases,dtos,controllers},domain/{entities,repositories},infra/repositories}
 
 if [ $? -eq 0 ]; then
     echo "Structure of folders created successfully"

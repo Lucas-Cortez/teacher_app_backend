@@ -11,12 +11,13 @@ export const routes = async (instance: FastifyInstance) => {
 
   const jwtService = new WebJwtService();
 
-  const jwt = new JwtMiddleware(new JwtGuard(jwtService));
+  const jwtMiddleware = new JwtMiddleware(new JwtGuard(jwtService));
 
   const opa = jwtService.sign({ name: "Lucas" }, { expiresIn: "1w" });
 
-  // console.log(opa);
+  console.log(opa);
 
+  // Configure tags in swagger
   instance.addHook("onRoute", (routeOptions) => {
     if (routeOptions.prefix) {
       const tag = routeOptions.prefix.replace("/", "");
@@ -31,7 +32,7 @@ export const routes = async (instance: FastifyInstance) => {
   instance.get(
     "/hello",
     {
-      onRequest: jwt.use.bind(jwt),
+      onRequest: jwtMiddleware.use.bind(jwtMiddleware),
       schema: {
         security: [{ CookieAuth: [] }],
       },
@@ -40,7 +41,7 @@ export const routes = async (instance: FastifyInstance) => {
     async (request, reply) => {
       console.log(request.user);
 
-      reply.setCookie("accessToken", opa, { domain: "localhost", path: "/", maxAge: 60 });
+      // reply.setCookie("accessToken", opa, { domain: "localhost", path: "/", maxAge: 60 });
 
       return { hello: "world" };
     },

@@ -6,7 +6,6 @@ import { FastifyInstance } from "fastify";
 
 export const authRoutes = async (instance: FastifyInstance) => {
   // const authController = appContainer.resolve(AuthController);
-
   instance.post(
     "/send-login-token/:id",
     {
@@ -14,7 +13,7 @@ export const authRoutes = async (instance: FastifyInstance) => {
       //   body: testeSchema.definitions?.teste,
       // },
     },
-    async (request, reply) => {
+    (request, reply) => {
       return { hello: "world" };
     },
   );

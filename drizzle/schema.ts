@@ -1,5 +1,6 @@
-import { boolean, date, pgTable, text, uuid, varchar, time, integer } from "drizzle-orm/pg-core";
+import { boolean, date, pgTable, text, uuid, varchar, time, smallint } from "drizzle-orm/pg-core";
 import { UserRole } from "./../src/modules/user/domain/enum/user-role";
+import { Duration } from "./../src/modules/class/domain/enums/duration";
 
 export const userTable = pgTable("user", {
   userId: uuid("user_id").primaryKey(),
@@ -74,6 +75,7 @@ export const classTable = pgTable("class", {
   teacherStudentId: uuid("teacher_student_id").references(() => teacherStudentTable.teacherStudentId),
   content: text("content"),
   startAt: date("start_at").notNull(),
+  duration: smallint("duration").notNull(),
 });
 
 export type SelectClass = typeof classTable.$inferSelect;
@@ -87,7 +89,7 @@ export const scheduleTable = pgTable("schedule", {
   frequency: varchar("frequency").notNull(),
   hour: time("hour").notNull(),
   weekday: varchar("weekday").notNull(),
-  duration: integer("duration").notNull(),
+  duration: smallint("duration").$type<Duration>().notNull(),
 });
 
 export type SelectSchedule = typeof scheduleTable.$inferSelect;

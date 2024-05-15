@@ -7,8 +7,8 @@ import { TokenType } from "../../domain/enums/token-type";
 
 export type LoginWithTokenInput = { email: string; token: string };
 export type LoginWithTokenOutput = {
-  accessToken: string;
   // refreshToken: string;
+  accessToken: string;
   user: { userId: string; email: string; role: string; verified: boolean };
 };
 

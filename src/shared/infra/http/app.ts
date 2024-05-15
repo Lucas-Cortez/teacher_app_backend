@@ -1,7 +1,7 @@
 import Fastify, { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import FastifySwagger from "@fastify/swagger";
 import FastifySwaggerUi from "@fastify/swagger-ui";
-import FastifyJwt from "@fastify/jwt";
+// import FastifyJwt from "@fastify/jwt";
 import FastifyCookie from "@fastify/cookie";
 
 import { routes } from "./routes";
@@ -22,21 +22,21 @@ export class App {
     this.configureCookies();
     this.configureErrorHandler();
     this.configureSwagger();
-    this.configureJwt();
+    // this.configureJwt();
     this.configureRoutes();
   }
 
-  private configureJwt() {
-    this.app.register(FastifyJwt, { secret: env.JWT_SECRET });
+  // private configureJwt() {
+  //   this.app.register(FastifyJwt, { secret: env.JWT_SECRET });
 
-    this.app.decorate("authenticate", async (request: FastifyRequest, reply: FastifyReply) => {
-      try {
-        await request.jwtVerify();
-      } catch (err) {
-        reply.send(err);
-      }
-    });
-  }
+  //   this.app.decorate("authenticate", async (request: FastifyRequest, reply: FastifyReply) => {
+  //     try {
+  //       await request.jwtVerify();
+  //     } catch (err) {
+  //       reply.send(err);
+  //     }
+  //   });
+  // }
 
   private configureSwagger() {
     this.app.register(FastifySwagger, {

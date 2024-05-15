@@ -2,26 +2,26 @@ import { randomUUID } from "crypto";
 
 export interface IClass {
   classId: string;
-  content?: string;
-  startAt: Date;
-  duration: string;
+  title: string;
+  content: string;
+  type: string;
 
-  teacherStudentId: string;
+  teacherId: string;
 }
 
 export class Class implements IClass {
-  classId: string;
-  content?: string;
-  startAt: Date;
-  duration: string;
-  teacherStudentId: string;
+  readonly classId: string;
+  title: string;
+  content: string;
+  type: string;
+  readonly teacherId: string;
 
   private constructor(data: IClass) {
     this.classId = data.classId;
+    this.title = data.title;
     this.content = data.content;
-    this.startAt = data.startAt;
-    this.duration = data.duration;
-    this.teacherStudentId = data.teacherStudentId;
+    this.type = data.type;
+    this.teacherId = data.teacherId;
   }
 
   public static create(data: Omit<IClass, "classId">) {
@@ -30,5 +30,11 @@ export class Class implements IClass {
 
   public static restore(data: IClass): Class {
     return new Class(data);
+  }
+
+  public updateValues(data: Partial<Omit<IClass, "classId" | "teacherId">>) {
+    ["title", "content", "type"].forEach((field) => {
+      if (data[field]) this[field] = data[field];
+    });
   }
 }

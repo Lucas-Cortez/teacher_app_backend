@@ -1,7 +1,12 @@
-import { inject, injectable, singleton } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 // import { LoginWithTokenUseCase } from "../use-cases/login-with-token";
 import { SendLoginTokenUseCase } from "../use-cases/send-login-token";
 import { LoginWithTokenUseCase } from "../use-cases/login-with-token";
+import { LoginWithTokenDto } from "../dtos/login-with-token.dto";
+import { SendLoginTokenDto } from "../dtos/send-login-token.dto";
+import { FastifyReply, FastifyRequest } from "fastify";
+
+const COOKIE_DURATION = 60 * 60 * 24 * 7; // 7 days
 
 @injectable()
 export class AuthController {
@@ -12,15 +17,23 @@ export class AuthController {
     private readonly loginWithTokenUseCase: LoginWithTokenUseCase,
   ) {}
 
-  async sendLoginToken(payload: any) {
-    const { email } = payload;
-    await this.sendLoginTokenUseCase.execute({ email });
-    return;
+  async sendLoginToken(request: FastifyRequest, _: FastifyReply) {
+    const dto = SendLoginTokenDto.validate(request.body);
+
+    return this.sendLoginTokenUseCase.execute(dto);
   }
 
-  async loginWithToken(payload: any) {
-    const { email, token } = payload;
-    const data = await this.loginWithTokenUseCase.execute({ email, token });
+  async loginWithToken(request: FastifyRequest, response: FastifyReply) {
+    const dto = LoginWithTokenDto.validate(request.body);
+
+    const data = await this.loginWithTokenUseCase.execute(dto);
+
+    response.setCookie("accessToken", data.accessToken, {
+      domain: "localhost",
+      path: "/",
+      maxAge: COOKIE_DURATION,
+    });
+
     return data;
   }
 }

@@ -12,6 +12,7 @@ export default defineConfig((options) => {
     watch: isDev,
     sourcemap: isDev,
     onSuccess: isDev ? "node dist/server.js" : undefined,
+    minify: !isDev,
     ...options,
   };
 });

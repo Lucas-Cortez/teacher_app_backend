@@ -5,7 +5,7 @@ import { IStudentRepository, StudentRepository } from "../../domain/repositories
 import { StudentQueryOptions } from "../../domain/entities/student-query-options";
 import { PaginatedOutput } from "src/core/abstracts/pagination";
 import { Student } from "../../domain/entities/student";
-import { buildPaginatedMetadata } from "src/shared/utils/helpers/build-paginated-metadata";
+import { PaginatedMetadataFactory } from "src/shared/factories/paginated-metadata-factory";
 
 export type GetStudentsByTeacherInput = { teacherId: string; query?: Omit<StudentQueryOptions, "teacherId"> };
 export type GetStudentsByTeacherOutput = PaginatedOutput<Student>;
@@ -27,7 +27,7 @@ export class GetStudentsByTeacherUseCase
 
     return {
       data,
-      meta: buildPaginatedMetadata(input.query, count),
+      meta: PaginatedMetadataFactory.create(input.query, count),
     };
   }
 }
