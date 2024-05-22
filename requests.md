@@ -10,6 +10,7 @@
 - getClassTemplate [TEACHER]✅
 - createClassTemplate [TEACHER]✅
 - updateClassTemplate [TEACHER]✅
+- deleteClassTemplate [TEACHER]✅
 
 - getStudentClasses (paginated, ordinated(asc/desc)) [STUDENT, TEACHER?]
 - getStudentClass [STUDENT, TEACHER]✅
@@ -22,7 +23,7 @@
 
 - getStudentHomework [STUDENT, TEACHER]
 - getStudentHomeworks (paginated, ordinated(asc/desc)) [STUDENT, TEACHER]
-- createStudentHomework [TEACHER]
+- createStudentHomework [TEACHER]✅
 - updateStudentHomework [TEACHER]
 - deleteStudentHomework [TEACHER]
 
@@ -30,4 +31,4 @@
 - getHoweworkTemplates [TEACHER]✅
 - createHomeworkTemplate [TEACHER]✅
 - updateHomeworkTemplate [TEACHER]✅
-- deleteHomeworkTemplate [TEACHER]
+- deleteHomeworkTemplate [TEACHER]✅

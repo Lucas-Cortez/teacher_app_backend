@@ -10,7 +10,9 @@ export interface IStudentHomework {
   refHomeworkId?: string;
   status: HomeworkStatus;
 
-  teacherStudentId: string;
+  // teacherStudentId: string;
+  studentId: string;
+  teacherId: string;
 }
 
 export class StudentHomework implements IStudentHomework {
@@ -21,7 +23,9 @@ export class StudentHomework implements IStudentHomework {
   deliveredAt?: Date | undefined;
   refHomeworkId?: string | undefined;
   status: HomeworkStatus;
-  readonly teacherStudentId: string;
+  // readonly teacherStudentId: string;
+  readonly studentId: string;
+  readonly teacherId: string;
 
   private constructor(homework: IStudentHomework) {
     this.studentHomeworkId = homework.studentHomeworkId;
@@ -31,7 +35,9 @@ export class StudentHomework implements IStudentHomework {
     this.deliveredAt = homework.deliveredAt;
     this.refHomeworkId = homework.refHomeworkId;
     this.status = homework.status;
-    this.teacherStudentId = homework.teacherStudentId;
+    this.studentId = homework.studentId;
+    this.teacherId = homework.teacherId;
+    // this.teacherStudentId = homework.teacherStudentId;
   }
 
   public static create(student: Omit<IStudentHomework, "studentHomeworkId">) {

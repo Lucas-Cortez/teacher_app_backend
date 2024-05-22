@@ -8,7 +8,7 @@ import { HomeworkQueryOptions } from "../../domain/entities/homework-query-optio
 import { PaginatedMetadataFactory } from "src/shared/factories/paginated-metadata-factory";
 
 export type GetHomeworkTemplatesInput = {
-  homeworkId: string;
+  teacherId: string;
   query: Omit<HomeworkQueryOptions, "teacherId">;
 };
 export type GetHomeworkTemplatesOutput = PaginatedOutput<Homework>;
@@ -23,7 +23,7 @@ export class GetHomeworkTemplatesUseCase
   ) {}
 
   async execute(input: GetHomeworkTemplatesInput): Promise<GetHomeworkTemplatesOutput> {
-    const result = await this.homeworkRepository.findAll({ ...input.query });
+    const result = await this.homeworkRepository.findAll({ ...input.query, teacherId: input.teacherId });
 
     return {
       data: result.data,

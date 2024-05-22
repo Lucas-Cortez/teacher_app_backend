@@ -5,9 +5,12 @@ import { HomeworkRepository, IHomeworkRepository } from "../../domain/repositori
 import { PaginatedOutput } from "src/core/abstracts/pagination";
 import { Homework } from "../../domain/entities/homework";
 import { HomeworkQueryOptions } from "../../domain/entities/homework-query-options";
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "src/core/constants/pagination-params";
+import { PaginatedMetadataFactory } from "src/shared/factories/paginated-metadata-factory";
 
-export type GetTeacherHomeworksInput = { teacherId: string; query?: Omit<HomeworkQueryOptions, "teacherId"> };
+export type GetTeacherHomeworksInput = {
+  teacherId: string;
+  query?: Omit<HomeworkQueryOptions, "teacherId">;
+};
 export type GetTeacherHomeworksOutput = PaginatedOutput<Homework>;
 
 @injectable()
@@ -20,15 +23,11 @@ export class GetTeacherHomeworksUseCase
   ) {}
 
   async execute(input: GetTeacherHomeworksInput): Promise<GetTeacherHomeworksOutput> {
-    const data = await this.homeworkRepository.findAll({ ...input.query, teacherId: input.teacherId });
+    const result = await this.homeworkRepository.findAll({ ...input.query, teacherId: input.teacherId });
 
     return {
-      data,
-      meta: {
-        page: input.query?.page || DEFAULT_PAGE,
-        size: input.query?.size || DEFAULT_PAGE_SIZE,
-        total: data.length,
-      },
+      data: result.data,
+      meta: PaginatedMetadataFactory.create(input.query, result.count),
     };
   }
 }

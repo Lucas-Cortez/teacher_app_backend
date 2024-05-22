@@ -6,6 +6,7 @@ import { Homework } from "../../domain/entities/homework";
 
 export type UpdateHomeworkTemplateInput = {
   homeworkId: string;
+  teacherId: string;
   title?: string;
   content?: string;
 };
@@ -21,7 +22,10 @@ export class UpdateHomeworkTemplateUseCase
   ) {}
 
   async execute(input: UpdateHomeworkTemplateInput): Promise<UpdateHomeworkTemplateOutput> {
-    const homeworkTemplate = await this.homeworkRepository.findById(input.homeworkId);
+    const homeworkTemplate = await this.homeworkRepository.findByIdAndTeacherId(
+      input.homeworkId,
+      input.teacherId,
+    );
 
     if (!homeworkTemplate) throw new Error("Homework template not found");
 
