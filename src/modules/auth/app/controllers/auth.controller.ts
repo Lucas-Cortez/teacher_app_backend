@@ -6,8 +6,6 @@ import { LoginWithTokenDto } from "../dtos/login-with-token.dto";
 import { SendLoginTokenDto } from "../dtos/send-login-token.dto";
 import { FastifyReply, FastifyRequest } from "fastify";
 
-const COOKIE_DURATION = 60 * 60 * 24 * 7; // 7 days
-
 @injectable()
 export class AuthController {
   constructor(
@@ -31,7 +29,7 @@ export class AuthController {
     response.setCookie("accessToken", data.accessToken, {
       domain: "localhost",
       path: "/",
-      maxAge: COOKIE_DURATION,
+      maxAge: 60 * 60 * 24 * 7, // 7 days,
     });
 
     return data;

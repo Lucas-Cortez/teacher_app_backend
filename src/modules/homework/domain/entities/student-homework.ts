@@ -35,9 +35,10 @@ export class StudentHomework implements IStudentHomework {
     this.deliveredAt = homework.deliveredAt;
     this.refHomeworkId = homework.refHomeworkId;
     this.status = homework.status;
+
+    // this.teacherStudentId = homework.teacherStudentId;
     this.studentId = homework.studentId;
     this.teacherId = homework.teacherId;
-    // this.teacherStudentId = homework.teacherStudentId;
   }
 
   public static create(student: Omit<IStudentHomework, "studentHomeworkId">) {

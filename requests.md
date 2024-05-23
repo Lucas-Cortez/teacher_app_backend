@@ -21,11 +21,11 @@
 
 ## Homework
 
-- getStudentHomework [STUDENT, TEACHER]
-- getStudentHomeworks (paginated, ordinated(asc/desc)) [STUDENT, TEACHER]
+- getStudentHomework [STUDENT, TEACHER]⚠️
+- getStudentHomeworks (paginated, ordinated(asc/desc)) [STUDENT, TEACHER]⚠️
 - createStudentHomework [TEACHER]✅
 - updateStudentHomework [TEACHER]
-- deleteStudentHomework [TEACHER]
+- deleteStudentHomework [TEACHER]✅
 
 - getHomeworkTemplate [TEACHER]✅
 - getHoweworkTemplates [TEACHER]✅
