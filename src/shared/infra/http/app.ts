@@ -30,7 +30,6 @@ export class App {
       openapi: {
         info: {
           title: "Teacher's backend API",
-          // description: "Testing the dahdapwjadw",
           version: "0.1.0",
         },
         components: {
@@ -62,7 +61,7 @@ export class App {
       if (error instanceof AppError)
         reply.status(error.status).send(AppError.formatError(error.error, error.status, error.message));
 
-      reply.status(500).send(ErrorFactory.internalServerError("Internal Server Error").appError);
+      reply.status(500).send(ErrorFactory.internalServerError(error.message).appError);
     });
   }
 

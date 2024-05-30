@@ -1,6 +1,6 @@
 import { boolean, date, pgTable, text, uuid, varchar, time, smallint } from "drizzle-orm/pg-core";
-import { UserRole } from "./../src/modules/user/domain/enum/user-role";
-import { Duration } from "./../src/modules/class/domain/enums/duration";
+import { Duration } from "src/modules/class/domain/enums/duration";
+import { UserRole } from "src/modules/user/domain/enum/user-role";
 
 export const userTable = pgTable("user", {
   userId: uuid("user_id").primaryKey(),

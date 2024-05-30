@@ -1,13 +1,15 @@
-import { IUseCase } from "src/core/abstracts/use-case";
+import { type IUseCase } from "src/core/abstracts/use-case";
 import { inject, injectable } from "tsyringe";
-import { ITokenCodeRepository, TokenCodeRepository } from "../../domain/repositories/token-code.repository";
-import { IUserRepository, UserRepository } from "src/modules/user/domain/repositories/user.repository";
-import { IJwtService, JwtService } from "../services/jwt.service";
+import {
+  type ITokenCodeRepository,
+  TokenCodeRepository,
+} from "../../domain/repositories/token-code.repository";
+import { type IUserRepository, UserRepository } from "src/modules/user/domain/repositories/user.repository";
+import { type IJwtService, JwtService } from "../services/jwt.service";
 import { TokenType } from "../../domain/enums/token-type";
 
 export type LoginWithTokenInput = { email: string; token: string };
 export type LoginWithTokenOutput = {
-  // refreshToken: string;
   accessToken: string;
   user: { userId: string; email: string; role: string; verified: boolean };
 };
@@ -42,11 +44,6 @@ export class LoginWithTokenUseCase implements IUseCase<LoginWithTokenInput, Logi
       { ...tokenUser, type: TokenType.ACCESS_TOKEN },
       { expiresIn: "1w" },
     );
-
-    // const refreshToken = this.jwtService.sign(
-    //   { userId: user.userId, type: TokenType.REFRESH_TOKEN },
-    //   { expiresIn: "30d" },
-    // );
 
     return { accessToken, user: tokenUser };
   }

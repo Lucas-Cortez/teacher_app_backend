@@ -1,13 +1,14 @@
 import { inject, injectable } from "tsyringe";
-// import { LoginWithTokenUseCase } from "../use-cases/login-with-token";
 import { SendLoginTokenUseCase } from "../use-cases/send-login-token";
 import { LoginWithTokenUseCase } from "../use-cases/login-with-token";
 import { LoginWithTokenDto } from "../dtos/login-with-token.dto";
 import { SendLoginTokenDto } from "../dtos/send-login-token.dto";
-import { FastifyReply, FastifyRequest } from "fastify";
+import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
+import { IController } from "src/core/abstracts/controller";
+import { zodToJsonSchema } from "zod-to-json-schema";
 
 @injectable()
-export class AuthController {
+export class AuthController implements IController {
   constructor(
     @inject(SendLoginTokenUseCase)
     private readonly sendLoginTokenUseCase: SendLoginTokenUseCase,
@@ -15,13 +16,44 @@ export class AuthController {
     private readonly loginWithTokenUseCase: LoginWithTokenUseCase,
   ) {}
 
-  async sendLoginToken(request: FastifyRequest, _: FastifyReply) {
+  async register(registerInstance: FastifyInstance) {
+    registerInstance.register(
+      async (instance) => {
+        instance.post(
+          "/",
+          {
+            schema: {
+              body: zodToJsonSchema(SendLoginTokenDto.schema, "SendLoginTokenDto").definitions
+                ?.SendLoginTokenDto,
+              security: [{ CookieAuth: [] }],
+            },
+          },
+          (request, reply) => this.sendLoginToken(request, reply),
+        );
+        instance.post(
+          "/login",
+          {
+            schema: {
+              body: zodToJsonSchema(LoginWithTokenDto.schema, "LoginWithTokenDto").definitions
+                ?.LoginWithTokenDto,
+            },
+          },
+          (request, reply) => this.loginWithToken(request, reply),
+        );
+      },
+      { prefix: "/auth" },
+    );
+  }
+
+  private async sendLoginToken(request: FastifyRequest, _: FastifyReply) {
+    console.log(request.cookies);
+
     const dto = SendLoginTokenDto.validate(request.body);
 
     return this.sendLoginTokenUseCase.execute(dto);
   }
 
-  async loginWithToken(request: FastifyRequest, response: FastifyReply) {
+  private async loginWithToken(request: FastifyRequest, response: FastifyReply) {
     const dto = LoginWithTokenDto.validate(request.body);
 
     const data = await this.loginWithTokenUseCase.execute(dto);
@@ -30,6 +62,8 @@ export class AuthController {
       domain: "localhost",
       path: "/",
       maxAge: 60 * 60 * 24 * 7, // 7 days,
+      secure: false,
+      // httpOnly: true,
     });
 
     return data;

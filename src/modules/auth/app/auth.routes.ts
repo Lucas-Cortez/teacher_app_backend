@@ -5,26 +5,27 @@ import { AuthController } from "./controllers/auth.controller";
 // import { zodToJsonSchema } from "zod-to-json-schema";
 
 export const authRoutes = async (instance: FastifyInstance) => {
-  // const authController = appContainer.resolve(AuthController);
-  // instance.post(
-  //   "/send-login-token/:id",
-  //   // {
-  //   //   // schema: {
-  //   //   //   body: testeSchema.definitions?.teste,
-  //   //   // },
-  //   // },
-  //   authController.sendLoginToken,
-  //   // (request, reply) => {
-  //   //   return { hello: "world" };
-  //   // },
-  // );
-  // instance.post(
-  //   "/login-with-token",
-  //   authController.loginWithToken,
-  //   // async (request, reply) => {
-  //   //   return { hello: "world" };
-  //   // }
-  // );
+  const authController = appContainer.resolve(AuthController);
+
+  instance.post(
+    "/send-login-token/:id",
+    // {
+    //   // schema: {
+    //   //   body: testeSchema.definitions?.teste,
+    //   // },
+    // },
+    authController.sendLoginToken,
+    // (request, reply) => {
+    //   return { hello: "world" };
+    // },
+  );
+  instance.post(
+    "/login-with-token",
+    authController.loginWithToken,
+    // async (request, reply) => {
+    //   return { hello: "world" };
+    // }
+  );
 };
 
 // const opa = z.object({

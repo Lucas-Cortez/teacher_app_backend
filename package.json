@@ -11,7 +11,7 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives",
     "format": "prettier --write \"src/**/*.ts\"",
     "db:generate": "pnpm drizzle-kit generate:pg",
-    "db:migrate": "pnpm tsx drizzle/migrate.ts",
+    "db:migrate": "pnpm tsx src/modules/database/infra/drizzle/migrate.ts",
     "db:push": "drizzle-kit push:pg",
     "db:studio": "drizzle-kit studio",
     "module:new": "bash create-module.sh",

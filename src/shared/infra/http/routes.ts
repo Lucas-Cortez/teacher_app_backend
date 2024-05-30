@@ -1,7 +1,9 @@
 import { FastifyInstance } from "fastify";
 import lodash from "lodash";
 
-import { authRoutes } from "src/modules/auth/app/auth.routes";
+import { AuthController } from "src/modules/auth/app/controllers/auth.controller";
+import { appContainer } from "src/shared/container/app-container";
+// import { authRoutes } from "src/modules/auth/app/auth.routes";
 // import { JwtGuard } from "src/modules/auth/app/guards/jwt.guard";
 // import { JwtMiddleware } from "src/modules/auth/app/middlewares/jwt-middleware";
 // import { WebJwtService } from "src/modules/auth/infra/services/web-jwt.service";
@@ -18,15 +20,9 @@ export const routes = async (instance: FastifyInstance) => {
     }
   });
 
-  instance.register(authRoutes, { prefix: "/auth" });
+  const authController = appContainer.resolve(AuthController);
 
-  // const jwtService = new WebJwtService();
-
-  // const jwtMiddleware = new JwtMiddleware(new JwtGuard(jwtService));
-
-  // const opa = jwtService.sign({ name: "Lucas" }, { expiresIn: "1w" });
-
-  // console.log(opa);
+  authController.register(instance);
 
   // Configure tags in swagger
 
