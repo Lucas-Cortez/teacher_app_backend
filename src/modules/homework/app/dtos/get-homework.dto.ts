@@ -1,4 +1,4 @@
-import { validateSchema } from "src/shared/utils/helpers/validate-schema";
+import { validateSchema } from "src/shared/factories/validate-schema.factory";
 import { z } from "zod";
 
 export namespace GetHomeworkDto {

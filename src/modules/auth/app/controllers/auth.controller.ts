@@ -5,7 +5,6 @@ import { LoginWithTokenDto } from "../dtos/login-with-token.dto";
 import { SendLoginTokenDto } from "../dtos/send-login-token.dto";
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { IController } from "src/core/abstracts/controller";
-import { zodToJsonSchema } from "zod-to-json-schema";
 
 @injectable()
 export class AuthController implements IController {
@@ -22,21 +21,14 @@ export class AuthController implements IController {
         instance.post(
           "/",
           {
-            schema: {
-              body: zodToJsonSchema(SendLoginTokenDto.schema, "SendLoginTokenDto").definitions
-                ?.SendLoginTokenDto,
-              security: [{ CookieAuth: [] }],
-            },
+            schema: { body: SendLoginTokenDto.json },
           },
           (request, reply) => this.sendLoginToken(request, reply),
         );
         instance.post(
           "/login",
           {
-            schema: {
-              body: zodToJsonSchema(LoginWithTokenDto.schema, "LoginWithTokenDto").definitions
-                ?.LoginWithTokenDto,
-            },
+            schema: { body: LoginWithTokenDto.json },
           },
           (request, reply) => this.loginWithToken(request, reply),
         );
@@ -46,8 +38,6 @@ export class AuthController implements IController {
   }
 
   private async sendLoginToken(request: FastifyRequest, _: FastifyReply) {
-    console.log(request.cookies);
-
     const dto = SendLoginTokenDto.validate(request.body);
 
     return this.sendLoginTokenUseCase.execute(dto);

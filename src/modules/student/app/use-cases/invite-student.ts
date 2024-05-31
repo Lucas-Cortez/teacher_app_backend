@@ -6,9 +6,9 @@ import { IUserRepository, UserRepository } from "src/modules/user/domain/reposit
 import { User } from "src/modules/user/domain/entities/user";
 import { UserRole } from "src/modules/user/domain/enum/user-role";
 import { TeacherStudent } from "../../domain/entities/teacher-student";
-import { IMailService, MailService } from "src/shared/services/mail.service";
 import { env } from "src/shared/utils/env";
 import { IUnitOfWork, UnitOfWork } from "src/shared/unit-of-work/unit-of-work";
+import { type IMailService, MailService } from "src/modules/mail/domain/services/mail.service";
 
 export type InviteStudentInput = { teacherId: string; email: string };
 export type InviteStudentOutput = void;
@@ -33,8 +33,8 @@ export class InviteStudentUseCase implements IUseCase<InviteStudentInput, Invite
       if (user?.isStudent()) throw new Error("User is not a student");
 
       if (!user) {
-        const newUser = User.create({ email: input.email, role: UserRole.STUDENT });
-        user = await this.userRepository.create(newUser, ctx);
+        user = User.create({ email: input.email, role: UserRole.STUDENT });
+        await this.userRepository.create(user, ctx);
       }
 
       const student = await this.studentRepository.findByUserId(user.userId, ctx);

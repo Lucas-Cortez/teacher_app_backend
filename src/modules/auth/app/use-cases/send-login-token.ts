@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import { type IUseCase } from "src/core/abstracts/use-case";
-import { type IMailService, MailService } from "src/shared/services/mail.service";
+import { type IMailService, MailService } from "src/modules/mail/domain/services/mail.service";
 import {
   type ITokenCodeRepository,
   TokenCodeRepository,

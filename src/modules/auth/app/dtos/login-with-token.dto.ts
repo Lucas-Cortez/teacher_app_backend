@@ -1,5 +1,6 @@
-import { validateSchema } from "src/shared/utils/helpers/validate-schema";
 import { z } from "zod";
+import zodToJsonSchema from "zod-to-json-schema";
+import { validateSchemaFactory } from "src/shared/factories/validate-schema.factory";
 
 export namespace LoginWithTokenDto {
   export const schema = z.object({
@@ -7,7 +8,9 @@ export namespace LoginWithTokenDto {
     token: z.string(),
   });
 
-  export const validate = validateSchema(schema);
+  export const validate = validateSchemaFactory(schema);
 
   export type Type = z.infer<typeof schema>;
+
+  export const json = zodToJsonSchema(LoginWithTokenDto.schema, "schema").definitions?.schema;
 }
