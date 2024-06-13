@@ -27,7 +27,7 @@ export class StudentController implements IController {
 
 
 
-    // return data
+    return data
   }
 
   async getStudentsByTeacher(request: FastifyRequest, reply: FastifyReply) {}
